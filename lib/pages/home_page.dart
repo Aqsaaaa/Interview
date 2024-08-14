@@ -37,34 +37,89 @@ class _MovieListScreenState extends State<MovieListScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final movie = snapshot.data![index];
-                final imageUrl = 'https://image.tmdb.org/t/p/w500${movie.posterPath}';
-                return ListTile(
-                  leading: Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                  ),
-                  title: Text(movie.title),
-                  subtitle: Text(
-                      'Release Date: ${movie.releaseDate}\nRating: ${movie.voteAverage}'),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Scaffold(
-                          appBar: AppBar(
-                            title: const Text('QR Code'),
+                final imageUrl =
+                    'https://image.tmdb.org/t/p/w500${movie.posterPath}';
+                final backDrop =
+                    'https://image.tmdb.org/t/p/w500${movie.backDropPath}';
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Image.network(
+                                imageUrl,
+                                scale: 5,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => Scaffold(
+                                        appBar: AppBar(
+                                          title: const Text(' Poster QR Code'),
+                                        ),
+                                        body: Center(
+                                          child: PrettyQr(
+                                            data: imageUrl.toString(),
+                                            size: 200,
+                                            elementColor: Colors.black,
+                                            roundEdges: true,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text("Generate QR"),
+                              ),
+                            ],
                           ),
-                          body: Center(
-                            child: PrettyQr(
-                              data: imageUrl.toString(),
-                              size: 200,
-                              elementColor: Colors.black,
-                              roundEdges: true,
-                            ),
+                          Column(
+                            children: [
+                              Image.network(
+                                backDrop,
+                                scale: 2,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => Scaffold(
+                                        appBar: AppBar(
+                                          title: const Text('Backdrop QR Code'),
+                                        ),
+                                        body: Center(
+                                          child: PrettyQr(
+                                            data: imageUrl.toString(),
+                                            size: 200,
+                                            elementColor: Colors.black,
+                                            roundEdges: true,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text("Generate QR"),
+                              ),
+                            ],
                           ),
-                        ),
+                        ],
                       ),
-                    );
-                  },
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(movie.title),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(movie.overview),
+                    ],
+                  ),
                 );
               },
             );
